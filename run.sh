@@ -8,6 +8,7 @@ echo "Divide Validation folder to Validation / test (50/50) ..."
 mv tiny-imagenet-200/test tiny-imagenet-200/test_save
 python3 prepare_data.py
 mkdir models
+mkdir out
 echo "Copying all images to ./tiny-224..."
 cp -r tiny-imagenet-200 tiny-224
 echo "Resizing images to 224 x 224..."
