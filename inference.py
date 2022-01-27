@@ -74,6 +74,7 @@ def inference(images_path, csv_path):
 
         with torch.set_grad_enabled(False):
             outputs = model(inputs)
+            outputs = outputs[:200]
             _, preds = torch.max(outputs, 1)
             preds = preds.data.cpu().numpy().flatten().tolist()
             predictions += preds
@@ -82,7 +83,7 @@ def inference(images_path, csv_path):
             img_names = [name_from_path(path) for path in paths]
 
             # Get 1 * 64 descriptor
-            descriptors = nn.AvgPool1d(10, 3)(nn.AvgPool1d(5, 5)(outputs))
+            descriptors = nn.AvgPool1d(10, 3)(outputs)
             descriptors = descriptors.numpy()
             descriptors_all += save_descriptors(img_names, descriptors)
 
