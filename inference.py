@@ -95,8 +95,9 @@ def inference(images_path, csv_path):
             descriptors = nn.AvgPool1d(10, 3)(outputs)
             descriptors = descriptors.numpy()
             descriptors_all += save_descriptors(img_names, descriptors)
-        print(f'Working: {i+1} / {len(list(iter(dataloader)))}')
         sys.stdout.flush()
+        print(f'Working: {i+1} / {len(list(iter(dataloader)))}')
+
 
     # Save to DataFrame
     results = pd.DataFrame({'image_path': paths_all, 'predicted': predictions, 'descriptors': descriptors_all})
