@@ -1,2 +1,7 @@
 out/
 saved.csv
+tiny-images/
+tiny-imagenet-200/
+tiny-imagenet-200.zip
+tiny-224/
+__pycache__
