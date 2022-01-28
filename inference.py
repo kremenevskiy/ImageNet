@@ -39,6 +39,10 @@ def get_model(weights_path=None):
     model = model.to(device)
     return model
 
+def get_mapped_predictions(mapping_dict, predictions):
+    mapped = [mapping_dict[pred] for pred in predictions]
+    return mapped
+
 
 class ImageFolderPath(datasets.ImageFolder):
     def __getitem__(self, index):
@@ -68,6 +72,11 @@ def inference(images_path, csv_path):
     descriptors_all = []
     paths_all = []
 
+    # Get mapping from train full dataset
+    class_mapping = ImageFolderPath('tiny-imagenet-200/train').class_to_idx
+    class_mapping = {v:k for k, v in class_mapping.items()}
+
+
     for i, (inputs, labels, paths) in enumerate(dataloader):
         inputs = inputs.to(device)
         optimizer.zero_grad()
@@ -77,7 +86,7 @@ def inference(images_path, csv_path):
             outputs = outputs[:200]
             _, preds = torch.max(outputs, 1)
             preds = preds.data.cpu().numpy().flatten().tolist()
-            predictions += preds
+            predictions += get_mapped_predictions(class_mapping, preds)
 
             paths_all += np.array(paths).flatten().tolist()
             img_names = [name_from_path(path) for path in paths]
